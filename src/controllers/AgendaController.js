@@ -19,19 +19,19 @@ module.exports = {
     },
 
 
-    /*buscarVeiculo: async (req, res) => {
+    buscarMes: async (req, res) => {
         let json = {erro:'', result:{}};
-        let placa = req.params.placa;        
-        let veiculo = await EstacionamentoService.buscarVeiculo(placa);
+        let mes = req.params.mes;        
+        let resultado = await AgendaService.buscarMes(mes);
       
         if(veiculo){
-            json.result = veiculo;
+            json.result = resultado;
         }else{
             json.result = "Não achou"
         }
         res.json(json);
     },
-    */
+    
 
     inserirAgenda: async (req, res) => {
         let json = {erro:'', result:{}};
