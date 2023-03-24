@@ -8,9 +8,9 @@ module.exports = {
             })
         })
     },
-    buscarMes: () => {
+    buscarMes: (mes) => {
         return new Promise((aceito, rejeitado) => {
-            db.query(`SELECT id, descAgenda, DATE_FORMAT(dataAgenda, "%m/%Y") as mesAgenda FROM agenda WHERE DATE_FORMAT(dataAgenda, "%m/%Y") = '${mes}'`, (error, results) => {
+            db.query(`SELECT id, descAgenda, DATE_FORMAT(dataAgenda, "%m/%Y") as mesAgenda FROM agenda WHERE DATE_FORMAT(dataAgenda, "%m/%Y") = "${mes}"`, (error, results) => {
                 if (error) { rejeitado(error); return }
                 aceito(results);
             })
@@ -20,6 +20,24 @@ module.exports = {
         return new Promise((aceito, rejeitado) => {
             db.query('INSERT INTO agenda (dataAgenda,descAgenda) VALUES(?,?) '
                 , [data, desc], (error, results) => {
+                    if (error) { rejeitado(error); return }
+                    aceito(results)
+                })
+        })
+    },
+    updateAgenda: ( id, data, desc) => {
+        return new Promise((aceito, rejeitado) => {
+            db.query(`UPDATE agenda SET descAgenda = ?, dataAgenda = ? WHERE id = ?`
+                , [ desc, data, id], (error, results) => {
+                    if (error) { rejeitado(error); return }
+                    aceito(results)
+                })
+        })
+    },
+    deleteAgenda: ( id ) => {
+        return new Promise((aceito, rejeitado) => {
+            db.query(`DELETE from agenda WHERE id = ?`
+                , [id], (error, results) => {
                     if (error) { rejeitado(error); return }
                     aceito(results)
                 })

@@ -1,3 +1,4 @@
+const { deleteAgenda } = require('../services/AgendaService');
 const AgendaService = require('../services/AgendaService');
 module.exports = {
     buscarTodos: async (req, res) => {
@@ -24,8 +25,8 @@ module.exports = {
         let mes = req.params.mes;        
         let resultado = await AgendaService.buscarMes(mes);
       
-        if(veiculo){
-            json.result = resultado;
+        if(resultado){
+            json.result = mes;
         }else{
             json.result = "Não achou"
         }
@@ -51,4 +52,34 @@ module.exports = {
     },
 
 
+    updateAgenda: async(req, res)=>{
+        let json = {erro:'', result:{}};
+        let data = req.body.data;  
+        let desc = req.body.desc;
+        let id = req.params.id;    
+            
+        if(data && desc){
+         let agenda = await AgendaService.updateAgenda(id,data,desc);
+         if(agenda){
+                json.result = agenda;
+         }
+        }else{
+            json.result = "Preencha todos os campos !!!";
+        }  
+        res.json(json);
+    },
+    deleteAgenda: async(req, res)=>{
+        let json = {erro:'', result:{}};
+        let id = req.params.id;    
+            
+        if(id){
+         let agenda = await AgendaService.deleteAgenda(id);
+         if(agenda){
+                json.result = agenda;
+         }
+        }else{
+            json.result = "Erro ao selecionar o id !!!";
+        }  
+        res.json(json);
+    }
 };
